@@ -27,7 +27,8 @@
 
 
 ## 📰 News
-= [2025-2-12] Lumina 2.0 is now available in Diffusers. Check out the [docs](https://huggingface.co/docs/diffusers/main/en/api/pipelines/lumina2) to know more.
+- [2025-2-20] Diffusers team released a LoRA fine-tuning script for Lumina2. Find out more [here](https://github.com/huggingface/diffusers/blob/main/examples/dreambooth/README_lumina2.md).
+- [2025-2-12] Lumina 2.0 is now available in Diffusers. Check out the [docs](https://huggingface.co/docs/diffusers/main/en/api/pipelines/lumina2) to know more.
 - [2025-2-10] The official [Hugging Face Space](https://huggingface.co/spaces/Alpha-VLLM/Lumina-Image-2.0) for Lumina-Image 2.0 is now available.
 - [2025-2-10] Preliminary explorations of video generation with **[Lumina-Video 1.0](https://github.com/Alpha-VLLM/Lumina-Video)** have been released.
 - [2025-2-5] **[ComfyUI](https://huggingface.co/Comfy-Org/Lumina_Image_2.0_Repackaged) now supports Lumina-Image 2.0!** 🎉 Thanks to **ComfyUI**[@ComfyUI](https://github.com/comfyanonymous/ComfyUI)! 🙌 Feel free to try it out! 🚀
