@@ -491,7 +491,6 @@ class NextDiT(nn.Module):
         in_channels: int = 4,
         dim: int = 4096,
         n_layers: int = 32,
-        n_refiner_layers: int = 2,
         n_heads: int = 32,
         n_kv_heads: Optional[int] = None,
         multiple_of: int = 256,
@@ -502,6 +501,7 @@ class NextDiT(nn.Module):
         axes_dims: List[int] = (16, 56, 56),
         axes_lens: List[int] = (1, 512, 512),
         tie_adaLN: bool = False,
+        s_emb: bool = False,
     ) -> None:
         super().__init__()
         self.in_channels = in_channels
@@ -550,6 +550,7 @@ class NextDiT(nn.Module):
         # )
 
         self.t_embedder = TimestepEmbedder(min(dim, 1024))
+        self.s_embedder = TimestepEmbedder(min(dim, 1024)) if s_emb else None
         self.cap_embedder = nn.Sequential(
             RMSNorm(cap_feat_dim, eps=norm_eps),
             nn.Linear(
@@ -718,7 +719,7 @@ class NextDiT(nn.Module):
         return padded_full_embed, mask, img_sizes, l_effective_cap_len, freqs_cis
 
 
-    def forward(self, x, t, cap_feats, cap_mask):
+    def forward(self, x_t, t, cap_feats, cap_mask, s=None):
         """
         Forward pass of NextDiT.
         t: (N,) tensor of diffusion timesteps
@@ -731,10 +732,15 @@ class NextDiT(nn.Module):
         #     pdb.set_trace()
             # torch.save([x, t, cap_feats, cap_mask], "./fake_input.pt")
         t = self.t_embedder(t)  # (N, D)
+        if s is not None:
+            s = self.s_embedder(s)
+            t = t + s
         adaln_input = t
 
         cap_feats = self.cap_embedder(cap_feats)  # (N, L, D)  # todo check if able to batchify w.o. redundant compute
 
+        x = x_t
+        
         x_is_tensor = isinstance(x, torch.Tensor)
         x, mask, img_size, cap_size, freqs_cis = self.patchify_and_embed(x, cap_feats, cap_mask, t)
         freqs_cis = freqs_cis.to(x.device)
