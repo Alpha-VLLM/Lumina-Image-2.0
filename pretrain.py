@@ -439,13 +439,7 @@ def main(args):
     vae = build_vae(vae_args).to(device)
 
     logger.info("AdamW eps 1e-15 betas (0.9, 0.95)")
-    # Scale learning rate based on global batch size
-    base_lr = args.lr
-    lr_scaling_factor = dp_world_size / 8
-    adjusted_lr = base_lr * lr_scaling_factor
-
-    opt = torch.optim.AdamW(model.parameters(), lr=adjusted_lr, weight_decay=args.wd, eps=1e-15, betas=(0.9, 0.95))
-    logger.info(f"Using scaled learning rate: {adjusted_lr} (base: {base_lr}, scaling: {lr_scaling_factor})")
+    opt = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.wd, eps=1e-15, betas=(0.9, 0.95))
     if args.resume:
         opt_state_world_size = len(
             [x for x in os.listdir(args.resume) if x.startswith("optimizer.") and x.endswith(".pth")]
@@ -466,7 +460,7 @@ def main(args):
             )
         )
         for param_group in opt.param_groups:
-            param_group["lr"] = adjusted_lr
+            param_group["lr"] = args.lr
             param_group["weight_decay"] = args.wd
 
         with open(os.path.join(args.resume, "resume_step.txt")) as f:
