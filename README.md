@@ -72,7 +72,7 @@
 
 
 
-## 📊 Quantatitive Performance
+## 📊 Quantitative Performance
 ![Quantitative Results](assets/quantitative.png)
 
 
