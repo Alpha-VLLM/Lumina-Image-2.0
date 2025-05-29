@@ -132,6 +132,13 @@ python demo.py \
 bash scripts/sample.sh
 ```
 
+## 🔥 Open Positions
+We are hiring interns and full-time researchers at the Alpha VLLM Group, Shanghai AI Lab. If you are interested, please contact alphavllm@gmail.com.
+
+## 🌟 Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Alpha-VLLM/Lumina-Image-2.0&type=Date)](https://www.star-history.com/#Alpha-VLLM/Lumina-Image-2.0&Date)
+
 ## Citation
 
 If you find the provided code or models useful for your research, consider citing them as:
