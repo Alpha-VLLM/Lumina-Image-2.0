@@ -129,11 +129,11 @@ def main(args, rank, master_port):
 
     dtype = {"bf16": torch.bfloat16, "fp16": torch.float16, "fp32": torch.float32}[args.precision]
 
-    tokenizer = AutoTokenizer.from_pretrained("google/gemma-2-2b")
+    tokenizer = AutoTokenizer.from_pretrained("google/gemma-2-2b", token=args.hf_token)
     tokenizer.padding_side = "right"
 
     text_encoder = AutoModel.from_pretrained(
-        "google/gemma-2-2b", torch_dtype=dtype, device_map="cuda"
+        "google/gemma-2-2b", torch_dtype=dtype, device_map="cuda", token=args.hf_token
     ).eval()
     cap_feat_dim = text_encoder.config.hidden_size
     
@@ -165,7 +165,7 @@ def main(args, rank, master_port):
         ckpt = torch.load(
             os.path.join(
                 args.ckpt,
-                f"consolidated{'_ema' if args.ema else ''}.{rank:02d}-of-{args.num_gpus:02d}.pth",
+                f"consolidated.{rank:02d}-of-{args.num_gpus:02d}.pth",
             )
         )
         model.load_state_dict(ckpt, strict=True)
@@ -431,6 +431,7 @@ if __name__ == "__main__":
     parser.add_argument("--do_shift", default=False)
     parser.add_argument("--debug", action="store_true")
     parser.add_argument("--batch_size", type=int, default=8)
+    parser.add_argument("--hf_token", type=str, default=None, help="huggingface read token for accessing gated repo.")
 
     parse_transport_args(parser)
     parse_ode_args(parser)
