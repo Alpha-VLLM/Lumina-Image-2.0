@@ -36,4 +36,5 @@ python -u finetune.py \
     --snr_type ${snr_type} \
     --checkpointing \
     --init_from ${check_path} \
+    --hf_token xxx \
     2>&1 | tee -a results/"$exp_name"/output.log
