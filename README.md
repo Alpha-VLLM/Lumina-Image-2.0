@@ -29,6 +29,7 @@
 
 
 ## 📰 News
+- [2025-6-26] 🎉🎉🎉 Lumina-Image 2.0 is accepted by ICCV 2025.
 - [2025-4-21] 🚀🚀🚀 We have released [Lumina-Accessory](https://github.com/Alpha-VLLM/Lumina-Accessory), which supports single-task and multi-task fine-tuning for controllable generation, image editing, and identity preservation based on Lumina-Image 2.0.
 - [2025-3-28] 👋👋👋 We are excited to announce the release of the Lumina-Image 2.0 [Tech Report](https://arxiv.org/abs/2503.21758). We welcome discussions and feedback! 
 - [2025-2-20] Diffusers team released a LoRA fine-tuning script for Lumina2. Find out more [here](https://github.com/huggingface/diffusers/blob/main/examples/dreambooth/README_lumina2.md).
@@ -87,19 +88,19 @@
 ## 💻 Finetuning Code
 ### 1. Create a conda environment and install PyTorch
 ```bash
-conda create -n Lumina2 -y
+git clone https://github.com/Alpha-VLLM/Lumina-Image-2.0.git
+conda create -n Lumina2 python=3.11 -y
 conda activate Lumina2
-conda install python=3.11 pytorch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0 pytorch-cuda=12.1 -c pytorch -c nvidia -y
 ```
 ### 2.Install dependencies
 ```bash
+cd Lumina-Image-2.0
 pip install -r requirements.txt
+pip install https://github.com/Dao-AILab/flash-attention/releases/download/v2.7.4.post1/flash_attn-2.7.4.post1+cu12torch2.2cxx11abiFALSE-cp311-cp311-linux_x86_64.whl --no-build-isolation
 ```
-### 3. Install flash-attn
-```bash
-pip install flash-attn --no-build-isolation
-```
-### 4. Prepare data
+> Kindly find proper flash-attn version from this [link](https://github.com/Dao-AILab/flash-attention/releases).
+> 
+### 3. Prepare data
 You can place the links to your data files in `./configs/data.yaml`. Your image-text pair training data format should adhere to the following:
 ```json
 {
@@ -107,35 +108,69 @@ You can place the links to your data files in `./configs/data.yaml`. Your image-
     "prompt": "a description of the image"
 }
 ```
-### 5. Start finetuning
+### 4. Start finetuning
+> [!Note]
+>Since **gemma2-2B** requires authentication, you’ll need a Huggingface [Access Token](https://huggingface.co/settings/tokens) and pass it via the ```--hf_token``` argument. 
+
 ```bash
 bash scripts/run_1024_finetune.sh
 ```
 ## 🚀 Inference Code
 We support multiple solvers including Midpoint Solver, Euler Solver, and **DPM Solver** for inference.
-> [!Note]
-> Both the Gradio demo and the direct inference method use the .pth format weight file, which can be downloaded from [Google Drive](https://drive.google.com/drive/folders/1LQLh9CJwN3GOkS3unrqI0K_q9nbmqwBh?usp=drive_link).
 
 > [!Note]
 > You can also directly download from [huggingface](https://huggingface.co/Alpha-VLLM/Lumina-Image-2.0/tree/main). We have uploaded the .pth weight files, and you can simply specify the `--ckpt` argument as the download directory.
-- Gradio Demo
+### Gradio Demo
+
 ```python   
 python demo.py \
     --ckpt /path/to/your/ckpt \
     --res 1024 \
-    --port 12123
+    --port 10010 \
+    --hf_token xxx
 ``` 
 
 
-- Direct Batch Inference
+### Direct Batch Inference
+* **`--model_dir`**: provide the path to your local checkpoint directory **or** specify `Alpha-VLLM/Lumina-Image-2.0`.
+* **`--cap_dir`**: point to either
+
+  * a JSON file that contains a `"prompt"` field, **or**
+  * a plain-text file with one prompt per line.
+
 ```bash
 bash scripts/sample.sh
+```
+
+### Diffusers inference
+
+```python
+import torch
+from diffusers import Lumina2Pipeline
+
+pipe = Lumina2Pipeline.from_pretrained("Alpha-VLLM/Lumina-Image-2.0", torch_dtype=torch.bfloat16)
+pipe.enable_model_cpu_offload() #save some VRAM by offloading the model to CPU. Remove this if you have enough GPU power
+
+prompt = "A serene photograph capturing the golden reflection of the sun on a vast expanse of water. "
+image = pipe(
+    prompt,
+    height=1024,
+    width=1024,
+    guidance_scale=4.0,
+    num_inference_steps=50,
+    cfg_trunc_ratio=0.25,
+    cfg_normalization=True,
+    generator=torch.Generator("cpu").manual_seed(0)
+).images[0]
+image.save("lumina_demo.png")
+
 ```
 
 ## 🔥 Open Positions
 We are hiring interns and full-time researchers at the Alpha VLLM Group, Shanghai AI Lab. If you are interested, please contact alphavllm@gmail.com.
 
 ## 🌟 Star History
+
 
 [![Star History Chart](https://api.star-history.com/svg?repos=Alpha-VLLM/Lumina-Image-2.0&type=Date)](https://www.star-history.com/#Alpha-VLLM/Lumina-Image-2.0&Date)
 
