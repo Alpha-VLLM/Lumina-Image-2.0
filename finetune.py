@@ -333,7 +333,7 @@ def main(args):
 
     # create tokenizers
     # Load the tokenizers
-    tokenizer = AutoTokenizer.from_pretrained("google/gemma-2-2b")
+    tokenizer = AutoTokenizer.from_pretrained("google/gemma-2-2b", token=args.hf_token)
     tokenizer.padding_side = "right"
 
     # create text encoders
@@ -341,6 +341,7 @@ def main(args):
     text_encoder = AutoModel.from_pretrained(
         "google/gemma-2-2b",
         torch_dtype=torch.bfloat16,
+        token=args.hf_token,
     ).cuda()
     text_encoder = setup_lm_fsdp_sync(text_encoder)
     logger.info(f"text encoder: {type(text_encoder)}")
@@ -853,6 +854,7 @@ if __name__ == "__main__":
         "--no_shift",
         action="store_true",
     )
+    parser.add_argument("--hf_token", type=str, default=None, help="huggingface read token for accessing gated repo.")
     args = parser.parse_args()
 
     main(args)
