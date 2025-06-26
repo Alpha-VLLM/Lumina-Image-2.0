@@ -19,4 +19,5 @@ python -u sample.py --ckpt ${model_dir} \
 --cfg_scale ${cfg_scale} \
 --system_type ${system_type} \
 --batch_size 1 \
+--hf_token xxx \
 --rank 0 \
