@@ -20,11 +20,13 @@
 [![Static Badge](https://img.shields.io/badge/Huiying-6B88E3?logo=youtubegaming&label=Demo%20Lumina-Image-2.0)](https://magic-animation.intern-ai.org.cn/image/create)&#160;
 [![Static Badge](https://img.shields.io/badge/Gradio-6B88E3?logo=youtubegaming&label=Demo%20Lumina-Image-2.0)](http://47.100.29.251:10010/)&#160;
 
+
+
+
+<b>¹Shanghai Innovation Institute, &nbsp; ²The University of Sydney, &nbsp; ³Shanghai AI Laboratory</b>
+
+<b>⁴The Chinese University of Hong Kong, &nbsp; ⁵Zhejiang University of Technology</b>
 </div>
-
-
-
-
 
 
 
