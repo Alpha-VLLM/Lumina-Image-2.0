@@ -25,7 +25,7 @@
 
 <b>¹Shanghai Innovation Institute, &nbsp; ²The University of Sydney, &nbsp; ³Shanghai AI Laboratory</b>
 
-<b>⁴The Chinese University of Hong Kong, &nbsp; ⁵Zhejiang University of Technology</b>
+<b>⁴The Chinese University of Hong Kong, &nbsp; ⁵Shanghai Jiao Tong University</b>
 </div>
 
 
