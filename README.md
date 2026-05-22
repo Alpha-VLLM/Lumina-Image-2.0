@@ -23,7 +23,7 @@
 
 
 
-<b>¹Shanghai Innovation Institute, &nbsp; ²The University of Sydney, &nbsp; ³Shanghai AI Laboratory</b>
+<b>¹The University of Sydney, &nbsp; ²Shanghai AI Laboratory, &nbsp; ³Shanghai Innovation Institute</b>
 
 <b>⁴The Chinese University of Hong Kong, &nbsp; ⁵Shanghai Jiao Tong University</b>
 </div>
